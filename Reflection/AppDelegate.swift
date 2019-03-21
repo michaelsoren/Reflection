@@ -7,40 +7,86 @@
 //
 
 import UIKit
+import StoreKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+    private var shouldDisplaySplash: Bool = false
+    private var splashViewController: UIViewController = UIViewController()
+    
+    let splashScreenDisplay = 2.0
+    
+    
+    /*
+     * Loads up all the default settings if necessary, and also
+     * Will display the app store review request if relevant.
+     */
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        shouldDisplaySplash = true
+        if let _ = UserDefaults.standard.object(forKey: UserDefaultKeys.launchedBefore) {
+            let numLaunches = UserDefaults.standard.integer(forKey: UserDefaultKeys.numLaunches)
+            if numLaunches == 2 {
+                //Displays the review request, since this is the third launch
+                SKStoreReviewController.requestReview()
+            }
+            UserDefaults.standard.set(numLaunches + 1, forKey: UserDefaultKeys.numLaunches)
+        } else {
+            UserDefaults.standard.set(true, forKey: UserDefaultKeys.launchedBefore)
+            
+            UserDefaults.standard.set(Constants.defaultPrompts, forKey: UserDefaultKeys.prompts)
+            
+            //Set this date as the initial launch date. Updates settings bundle to reflect the start date
+            let today = Date()
+            let dF = DateFormatter()
+            dF.dateFormat = "MM/dd/yyyy"
+            let initialLaunchDate = dF.string(for: today)!
+            
+            UserDefaults.standard.set(initialLaunchDate, forKey: UserDefaultKeys.launchDate)
+            
+            //Set the launch count to zero, since they just started
+            UserDefaults.standard.set(0, forKey: UserDefaultKeys.numLaunches)
+            
+            //Display about on first login
+            UserDefaults.standard.set(true, forKey: UserDefaultKeys.shouldDisplayAbout)
+            
+            //List of dates that have valid entries. Will eventually be replaced
+            UserDefaults.standard.set([String](), forKey: UserDefaultKeys.entriesList)
+            UserDefaults.standard.set(true, forKey: UserDefaultKeys.shouldSendNotifications)
+            UserDefaults.standard.set(false, forKey: UserDefaultKeys.hasAskedAboutNotifications)
+            UserDefaults.standard.set(Date(), forKey: UserDefaultKeys.reminderTime)
+        }
         return true
     }
-
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    }
-
+    
+    
+    /*
+     * When application vecomes active, displays the launch screen for the scheduled time
+     * interval
+     */
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if shouldDisplaySplash {
+            let storyboard = UIStoryboard(name: "LaunchScreen", bundle: nil)
+            splashViewController = storyboard.instantiateViewController(withIdentifier: "LaunchScreen")
+            self.window!.rootViewController!.present(splashViewController, animated: false, completion:
+                {
+                    self.shouldDisplaySplash = false
+                    Timer.scheduledTimer(timeInterval: self.splashScreenDisplay, target: self, selector: #selector(self.removeSplashViewController), userInfo: nil, repeats: false)
+            })
+        }
     }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    
+    //Mark: - Helper functions
+    
+    
+    /*
+     * Function that dismisses the splash view controller
+     */
+    @objc private func removeSplashViewController() {
+        self.splashViewController.dismiss(animated: false, completion: nil)
     }
-
-
 }
 

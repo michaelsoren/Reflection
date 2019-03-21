@@ -1,28 +1,31 @@
 {
   "images" : [
     {
-      "idiom" : "iphone",
       "size" : "20x20",
+      "idiom" : "iphone",
+      "filename" : "RedoneFinalWithoutShadows20x20.png",
       "scale" : "2x"
     },
     {
       "idiom" : "iphone",
       "size" : "20x20",
       "scale" : "3x"
+    },
+    {
+      "size" : "29x29",
+      "idiom" : "iphone",
+      "filename" : "RedoneFinalWithoutShadows29x29.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "iphone",
       "size" : "29x29",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "iphone",
-      "size" : "29x29",
       "scale" : "3x"
     },
     {
-      "idiom" : "iphone",
       "size" : "40x40",
+      "idiom" : "iphone",
+      "filename" : "RedoneFinalWithoutShadows40x40.png",
       "scale" : "2x"
     },
     {
@@ -31,8 +34,9 @@
       "scale" : "3x"
     },
     {
-      "idiom" : "iphone",
       "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "RedoneFinalWithoutShadows2_120x120.png",
       "scale" : "2x"
     },
     {
@@ -86,8 +90,9 @@
       "scale" : "2x"
     },
     {
-      "idiom" : "ios-marketing",
       "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "RedoneFinalWithoutShadows1024x1024.png",
       "scale" : "1x"
     }
   ],
