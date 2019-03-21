@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  SecondViewController.swift
 //  Reflection
 //
 //  Created by Michael LeMay on 3/5/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class PastViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
