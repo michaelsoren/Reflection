@@ -1,4 +1,4 @@
-# mpcs51030-2019-winter-final-project-michaelsoren
+# Reflection
 
 This is my project! I think everything is fine and I have no bugs I know of.
 I think all the requirements for the project is complete.
